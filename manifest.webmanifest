@@ -1,0 +1,20 @@
+{
+ "id": "./",
+ "name": "LazySound",
+ "short_name": "LazySound",
+ "description": "LazySound: музыка, которая не напрягает.",
+ "lang": "ru",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#0a0a0a",
+ "theme_color": "#0a0a0a",
+ "categories": ["music", "entertainment"],
+ "icons": [
+  {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+  {"src": "icon-512%20(2).png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+  {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+  {"src": "icon-512%20(2).png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ]
+}
