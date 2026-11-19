@@ -106,6 +106,7 @@ nav button span{font-size:20px;line-height:1}nav button.on{color:var(--ink)}
 .chk{display:flex;gap:10px;align-items:flex-start;margin-top:10px;font-size:13px;color:var(--mut);text-align:left}
 .chk input{accent-color:var(--ink);margin-top:3px}
 .st{font-size:11px;border:1.5px solid var(--s2);border-radius:99px;padding:2px 8px;color:var(--mut);white-space:nowrap}
+.tr>.tr{flex:1;min-width:0;width:auto}.ib,.tr .chip,.tr .st{flex:none}
 @media(max-width:560px){.plans{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}canvas{height:190px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style></head>
@@ -163,18 +164,11 @@ nav button span{font-size:20px;line-height:1}nav button.on{color:var(--ink)}
 <div class="modal" id="md"><div class="box"><h3 id="mh"></h3><p id="mpp"></p><button class="cta" id="go">Включить Pro (демо)</button><br><button class="chip" id="no" style="margin-top:10px">Не сейчас</button></div></div>
 <div id="gate"><div class="gbox">
 <div class="logo" style="font-size:36px">lazysound</div><p class="gs">Музыка, которая не напрягает</p>
-<div class="plan"><button id="gt1" class="on">Регистрация</button><button id="gt2">Вход</button></div>
-<input id="gn" placeholder="Имя" autocomplete="nickname" maxlength="16">
-<input id="ge" type="email" placeholder="Почта" autocomplete="email">
-<input id="gp" type="password" placeholder="Пароль (от 6 символов)" autocomplete="new-password">
-<button class="cta" id="gsub">Создать аккаунт</button>
-<div class="gor">или</div>
-<button class="gg" id="ggl"><b style="font:800 18px Syne,sans-serif">G</b>Продолжить с Google</button>
+<button class="cta" id="ggl" style="margin-top:28px;display:flex;gap:10px;justify-content:center;align-items:center"><b style="font:800 18px Syne,sans-serif">G</b>Войти через Google</button>
 <div class="gerr" id="gerr"></div>
-<button class="lnk" id="gforgot" style="display:none">Забыл пароль?</button>
-<button class="lnk" id="gskip">Пропустить, смотреть как гость</button>
+<button class="lnk" id="gskip">Посмотреть как гость</button>
 </div></div>
-<script>try{if(localStorage.getItem("lsg"))document.getElementById("gate").classList.add("off")}catch(e){}</script>
+<script>try{if(localStorage.getItem("lsg")||localStorage.getItem("lsu"))document.getElementById("gate").classList.add("off")}catch(e){}</script>
 <div class="toast" id="ts"></div>
 
 <script>
@@ -313,32 +307,24 @@ renderModes();rl();note();prof();setPro(S.pro,1);requestAnimationFrame(draw);
 </script>
 <script type="module">
 const G0=id=>document.getElementById(id);
-let initializeApp,getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,sendPasswordResetEmail,getFirestore,doc,getDoc,setDoc,collection,addDoc,query,where,getDocs,updateDoc,deleteDoc,limit,bad=false;
+let initializeApp,getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,sendPasswordResetEmail,setPersistence,browserLocalPersistence,getFirestore,doc,getDoc,setDoc,collection,addDoc,query,where,getDocs,updateDoc,deleteDoc,limit,bad=false;
 try{const B="https://www.gstatic.com/firebasejs/10.12.2/";
 ({initializeApp}=await import(B+"firebase-app.js"));
-({getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,sendPasswordResetEmail}=await import(B+"firebase-auth.js"))}catch(e){bad=true}
+({getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,sendPasswordResetEmail,setPersistence,browserLocalPersistence}=await import(B+"firebase-auth.js"))}catch(e){bad=true}
 try{({getFirestore,doc,getDoc,setDoc,collection,addDoc,query,where,getDocs,updateDoc,deleteDoc,limit}=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"))}catch(e){}
-if(bad){const m="Не получилось загрузить Firebase. Проверь интернет, выключи VPN и обнови страницу.";["gsub","ggl","gforgot"].forEach(i=>G0(i).onclick=()=>G0("gerr").textContent=m);G0("gskip").onclick=()=>{try{localStorage.setItem("lsg","1")}catch(e){}G0("gate").classList.add("off")};G0("gerr").textContent=m;throw new Error("firebase load failed")}
+if(bad){const m="Не получилось загрузить Firebase. Проверь интернет, выключи VPN и обнови страницу.";["ggl"].forEach(i=>G0(i).onclick=()=>G0("gerr").textContent=m);G0("gskip").onclick=()=>{try{localStorage.setItem("lsg","1")}catch(e){}G0("gate").classList.add("off")};G0("gerr").textContent=m;throw new Error("firebase load failed")}
 const app=initializeApp({apiKey:"AIzaSyDDEeD3yDjajFrTgz4F2Ozh19WT7tggGew",authDomain:"lazysound-54669.firebaseapp.com",projectId:"lazysound-54669",storageBucket:"lazysound-54669.firebasestorage.app",messagingSenderId:"899172951463",appId:"1:899172951463:web:8ea70b04d6eb18e9580282"});
 const auth=getAuth(app),db=(()=>{try{return getFirestore(app)}catch(e){return null}})(),g=id=>document.getElementById(id),box=g("acc");
 const lsg=(v)=>{try{v?localStorage.setItem("lsg","1"):localStorage.removeItem("lsg")}catch(e){}};
 const ERR={"email-already-in-use":"Эта почта уже зарегистрирована. Нажми «Вход».","weak-password":"Пароль слишком короткий, нужно от 6 символов","invalid-email":"Проверь почту, в ней ошибка","invalid-credential":"Неверная почта или пароль","wrong-password":"Неверная почта или пароль","user-not-found":"Аккаунт не найден. Нажми «Регистрация».","operation-not-allowed":"Этот способ входа не включён в Firebase","unauthorized-domain":"Домен не добавлен в Firebase","too-many-requests":"Слишком много попыток, подожди немного","network-request-failed":"Нет интернета"};
 const msg=e=>{const c=(e.code||"").replace("auth/","");return ERR[c]||"Ошибка: "+c};
-let mode="up";
-function gmode(m){mode=m;g("gt1").className=m==="up"?"on":"";g("gt2").className=m==="in"?"on":"";g("gn").style.display=m==="up"?"":"none";g("gsub").textContent=m==="up"?"Создать аккаунт":"Войти";g("gp").autocomplete=m==="up"?"new-password":"current-password";g("gforgot").style.display=m==="in"?"":"none";g("gerr").textContent=""}
-g("gt1").onclick=()=>gmode("up");g("gt2").onclick=()=>gmode("in");
-g("gsub").onclick=async()=>{const em=g("ge").value.trim(),pw=g("gp").value,er=g("gerr");if(!em||!pw)return er.textContent="Введи почту и пароль";
-g("gsub").disabled=true;er.textContent="";
-try{if(mode==="up"){const c=await createUserWithEmailAndPassword(auth,em,pw),n=g("gn").value.trim();if(n){await updateProfile(c.user,{displayName:n});user=auth.currentUser;S.name=n;save();$("#nm").value=n;render();prof()}}else await signInWithEmailAndPassword(auth,em,pw)}catch(e){er.textContent=msg(e)}
-g("gsub").disabled=false};
 async function gg(){const er=g("gerr");er.textContent="Открываю Google…";try{await signInWithPopup(auth,new GoogleAuthProvider());er.textContent=""}catch(e){const c=e.code||"";er.textContent=c==="auth/popup-blocked"?"Браузер заблокировал окно. Разреши всплывающие окна для сайта и нажми ещё раз.":(c==="auth/popup-closed-by-user"||c==="auth/cancelled-popup-request")?"Вход не завершился. Попробуй ещё раз или зарегистрируйся по почте.":msg(e)}}
 g("ggl").onclick=gg;
-g("gforgot").onclick=async()=>{const em=g("ge").value.trim();if(!em)return g("gerr").textContent="Впиши почту, и пришлём письмо для сброса";try{await sendPasswordResetEmail(auth,em);g("gerr").textContent="Письмо для сброса отправлено на "+em}catch(e){g("gerr").textContent=msg(e)}};
 g("gskip").onclick=()=>{lsg(1);g("gate").classList.add("off")};
 function render(){
  if(user){box.innerHTML='<h3>Аккаунт</h3><p style="margin:0 0 10px;color:var(--mut)">Ты вошёл как <b style="color:var(--ink)">'+esc(user.displayName||"друг")+'</b><br>'+esc(user.email||"")+'<br>Лайки и статистика сохраняются в облаке.</p><button class="chip" id="out">Выйти</button>';
   g("out").onclick=()=>{lsg(0);signOut(auth).then(()=>toast("Ты вышел"))}}
- else{box.innerHTML='<h3>Аккаунт</h3><p style="margin:0 0 12px;color:var(--mut)">Ты в гостевом режиме. Создай аккаунт, чтобы лайки и статистика сохранялись на всех устройствах.</p><button class="cta" id="in">Войти или зарегистрироваться</button>';
+ else{box.innerHTML='<h3>Аккаунт</h3><p style="margin:0 0 12px;color:var(--mut)">Ты в гостевом режиме. Создай аккаунт, чтобы лайки и статистика сохранялись на всех устройствах.</p><button class="cta" id="in">Войти через Google</button>';
   g("in").onclick=()=>g("gate").classList.remove("off")}
 }
 async function pull(){try{const r=await getDoc(doc(db,"users",user.uid));if(r.exists()){const d=r.data();
@@ -347,10 +333,11 @@ async function pull(){try{const r=await getDoc(doc(db,"users",user.uid));if(r.ex
  else if(S.name==="Лентяй"&&user.displayName)S.name=user.displayName.split(" ")[0];
  save();$("#nm").value=S.name;rl();lkb();prof();push()}catch(e){console.warn("sync",e.code)}}
 async function push(){if(!user)return;try{await setDoc(doc(db,"users",user.uid),{name:S.name,likes:S.likes.filter(i=>i[0]==="s"),mins:S.mins,plays:S.plays,theme:S.theme,t:Date.now()},{merge:true})}catch(e){}}
+try{await setPersistence(auth,browserLocalPersistence)}catch(e){}
 onAuthStateChanged(auth,u=>{const was=user;user=u;render();prof();fx();
- if(u){g("gate").classList.add("off");pull();if(!was)toast("Привет, "+(u.displayName||"друг"))}
- else{let gst=false;try{gst=!!localStorage.getItem("lsg")}catch(e){}if(!gst)g("gate").classList.remove("off")}});
-setInterval(push,15000);document.addEventListener("visibilitychange",()=>document.hidden&&push());
+ if(u){try{localStorage.setItem("lsu","1")}catch(e){}g("gate").classList.add("off");pull();if(!was)toast("Привет, "+(u.displayName||"друг"))}
+ else{try{localStorage.removeItem("lsu")}catch(e){}let gst=false;try{gst=!!localStorage.getItem("lsg")}catch(e){}if(!gst)g("gate").classList.remove("off")}});
+setInterval(push,15000);addEventListener("pagehide",push);document.addEventListener("visibilitychange",()=>document.hidden&&push());
 
 const SB_URL="https://nyyustffsliazaejwzvi.supabase.co",SB_KEY="sb_publishable_3nrhMYQXaqRr8dw1Sneefw_H7Zz7Fvl",ADMIN="r30955667@gmail.com",MOD="lazyperson1444@gmail.com",CONTACT="lazyperson1444@gmail.com";
 au.crossOrigin="anonymous";
@@ -405,7 +392,7 @@ $("#fd").onclick=async e=>{const b=e.target.closest("button");if(!b)return;const
  }catch(er){toast(er.code||"Ошибка")}};
 async function loadAdm(){try{const[a,b,c]=await Promise.all([getDocs(query(col("tracks"),where("status","==","pending"))),getDocs(col("reports")),getDocs(query(col("profiles"),limit(50)))]);
  admP=a.docs.map(d=>({id:d.id,...d.data()}));const R=b.docs.map(d=>({id:d.id,...d.data()})),U=c.docs.map(d=>({id:d.id,...d.data()}));
- $("#adm").innerHTML=`<h3>${isAdm()?"Админ-панель":"Модерация"}</h3><b>На проверке (${admP.length})</b><div class="list" style="margin:8px 0 16px">${admP.map(t=>`<div class="tr"><button class="tr" style="padding:0" data-ap="${t.id}"><div class="m"><b>${esc(t.title)}</b><small>${esc(t.uname||"")} · тап, чтобы послушать</small></div></button><button class="ib" data-ok="${t.id}" aria-label="Одобрить">✓</button><button class="ib" data-no="${t.id}" aria-label="Отклонить">✕</button></div>`).join("")||"<small style='color:var(--mut)'>Пусто</small>"}</div>
+ $("#adm").innerHTML=`<h3>${isAdm()?"Админ-панель":"Модерация"}</h3><b>На проверке (${admP.length})</b><div class="list" style="margin:8px 0 16px">${admP.map(t=>`<div class="card" style="margin:0 0 10px;background:var(--bg)"><b>${esc(t.title)}</b><br><small style="color:var(--mut)">${esc(t.uname||"")}</small><audio controls preload="none" src="${esc(t.url)}" style="width:100%;margin:10px 0"></audio><div class="row" style="margin:0"><button class="cta" data-ok="${t.id}" style="flex:1">Одобрить</button><button class="chip" data-no="${t.id}" style="flex:1">Отклонить</button></div></div>`).join("")||"<small style='color:var(--mut)'>Пусто</small>"}</div>
  <b>Жалобы (${R.length})</b><div class="list" style="margin:8px 0 16px">${R.map(r=>`<div class="tr"><div class="m"><b>${esc(r.title||r.trackId)}</b><small>${esc(r.reason||"")}</small></div><button class="chip sm" data-rm="${r.trackId}">снять трек</button><button class="chip sm" data-rc="${r.id}">закрыть</button></div>`).join("")||"<small style='color:var(--mut)'>Пусто</small>"}</div>
  <b>Пользователи</b><div class="list" style="margin-top:8px">${U.map(u=>`<div class="tr"><div class="m"><b>${esc(u.name||"—")}${u.verified?' <span class="vb">✓</span>':""}</b><small>${u.banned?"заблокирован":u.id.slice(0,8)}</small></div>${isAdm()?`<button class="chip sm ${u.verified?"on":""}" data-vf="${u.id}|${u.verified?1:0}">галочка</button>`:""}<button class="chip sm ${u.banned?"on":""}" data-bn="${u.id}|${u.banned?1:0}">бан</button></div>`).join("")}</div>`}catch(e){$("#adm").innerHTML="<h3>Админ-панель</h3><small>Ошибка: "+esc(e.code||"")+"</small>"}}
 $("#adm").onclick=async e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;try{
@@ -417,5 +404,5 @@ $("#adm").onclick=async e=>{const b=e.target.closest("button");if(!b)return;cons
  if(d.vf&&isAdm()){const[u,v]=d.vf.split("|");await updateDoc(doc(db,"profiles",u),{verified:v!=="1"})}
  if(d.bn){const[u,v]=d.bn.split("|");await updateDoc(doc(db,"profiles",u),{banned:v!=="1"})}
  loadAdm();loadFeed()}catch(er){toast(er.code||"Ошибка")}};
-gmode("up");render();
+render();
 </script></body></html>
