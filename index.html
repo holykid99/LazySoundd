@@ -117,6 +117,11 @@ header .plan{display:none}
 a.chip{text-decoration:none;display:inline-block}
 .law h3{margin:16px 0 4px;font:800 15px Syne,sans-serif}.law h3:first-child{margin-top:0}
 .law p{margin:0 0 8px;color:var(--mut);font-size:14px}.law b{color:var(--ink)}
+.gw{overflow-x:auto;padding-bottom:6px}.g{display:grid;grid-template-columns:48px repeat(16,26px);gap:3px;width:max-content}
+.g b{position:sticky;left:0;background:var(--s1);font-size:11px;color:var(--mut);display:flex;align-items:center;z-index:1}
+.c{height:26px;border-radius:6px;background:var(--s2);color:var(--inv);font-size:12px;font-weight:800;padding:0}.c.q{background:#333}:root[data-theme=light] .c.q{background:#c4c4c0}
+.c.on{background:var(--ink)}.c.ph{outline:2px solid var(--mut)}
+nav button{font-size:11px}
 @media(max-width:560px){.plans{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}canvas{height:190px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style></head>
@@ -157,6 +162,7 @@ a.chip{text-decoration:none;display:inline-block}
 <div class="card"><h3>Pro на 30 дней</h3><p style="margin:0 0 10px;color:var(--mut)">Вайб-лаб, «Галактика», полный эквалайзер, безлимитные пропуски и lossless.</p><button class="cta" id="buypro" style="width:100%">Pro за 299 LC · скоро</button><p class="note" id="proinfo"></p></div>
 <h2>Пополнить LC</h2><div class="plans" id="packs"></div>
 <div class="card"><b>Оплата будет доступна с 1 по 5 декабря 2026.</b><p class="note" style="margin-bottom:0">Сейчас LC можно получать ежедневным бонусом. 1 LC = 1 ₽, окончательные цены объявим при запуске оплаты.</p></div></main>
+<main class="v" id="v-studio"><h2>Студия</h2><div id="stu"></div></main>
 <main class="v" id="v-lab"><h2>Вайб-лаб</h2>
 <section class="lab"><p style="margin:0 0 12px;color:var(--mut)">Двигай точку: музыка и картинка меняются вместе с тобой. Живой синтез, каждый раз новый трек.</p>
 <div class="pad" id="pad" tabindex="0" aria-label="Пад настроения"><i id="dot" style="left:50%;top:50%"></i>
@@ -182,7 +188,7 @@ a.chip{text-decoration:none;display:inline-block}
 </div>
 
 <div class="mini" id="mini"><b id="mt">—</b><button id="mp" aria-label="Играть">▶</button></div>
-<nav id="nav"><button data-v="home" class="on"><span>◉</span>Плеер</button><button data-v="lib"><span>☰</span>Библиотека</button><button data-v="feed"><span>♪</span>Лента</button><button data-v="lab"><span>✦</span>Лаб</button><button data-v="me"><span>●</span>Профиль</button></nav>
+<nav id="nav"><button data-v="home" class="on"><span>◉</span>Плеер</button><button data-v="lib"><span>☰</span>Треки</button><button data-v="feed"><span>♪</span>Лента</button><button data-v="studio"><span>▦</span>Студия</button><button data-v="lab"><span>✦</span>Лаб</button><button data-v="me"><span>●</span>Профиль</button></nav>
 <div class="modal" id="md"><div class="box"><h3 id="mh"></h3><p id="mpp"></p><button class="cta" id="go">Открыть магазин</button><br><button class="chip" id="no" style="margin-top:10px">Не сейчас</button></div></div>
 <div id="gate"><div class="gbox">
 <div class="logo" style="font-size:36px">lazysound</div><p class="gs">Музыка, которая не напрягает</p>
@@ -398,6 +404,13 @@ try{await setPersistence(auth,browserLocalPersistence)}catch(e){}
 onAuthStateChanged(auth,u=>{const was=user;user=u;render();prof();fx();
  if(u){try{localStorage.setItem("lsu","1")}catch(e){}g("gate").classList.add("off");pull();if(!was)toast("Привет, "+(u.displayName||"друг"))}
  else{try{localStorage.removeItem("lsu")}catch(e){}let gst=false;try{gst=!!localStorage.getItem("lsg")}catch(e){}if(!gst)g("gate").classList.remove("off")}});
+window.pubBlob=async(title,blob)=>{if(!user)return toast("Сначала войди через Google");if(!isAdm()&&mine.filter(x=>x.status!=="rejected").length>=60)return toast("Лимит: 60 треков на аккаунт");
+ if(SB_URL.startsWith("PASTE"))return toast("Хранилище не подключено");
+ const path=user.uid+"/"+Date.now()+"-"+Math.random().toString(36).slice(2,7)+".wav";
+ try{const ref=await addDoc(col("tracks"),{title:title.slice(0,60),uname:S.name,uid:user.uid,url:SB_URL+"/storage/v1/object/public/tracks/"+path,status:"pending",t:Date.now()});
+  const h={apikey:SB_KEY,"Content-Type":"audio/wav"};if(SB_KEY.startsWith("eyJ"))h.Authorization="Bearer "+SB_KEY;
+  const r=await fetch(SB_URL+"/storage/v1/object/tracks/"+path,{method:"POST",headers:h,body:blob});if(!r.ok){await deleteDoc(ref);throw new Error("хранилище "+r.status)}
+  toast("Отправлено на проверку");await loadFeed()}catch(e){toast("Ошибка: "+(e.message||e.code))}};
 setInterval(push,15000);addEventListener("pagehide",push);addEventListener("lsave",push);document.addEventListener("visibilitychange",()=>document.hidden&&push());
 
 const SB_URL="https://nyyustffsliazaejwzvi.supabase.co",SB_KEY="sb_publishable_3nrhMYQXaqRr8dw1Sneefw_H7Zz7Fvl",ADMIN="r30955667@gmail.com",MOD="lazyperson1444@gmail.com",CONTACT="lazyperson1444@gmail.com";
@@ -469,4 +482,120 @@ $("#adm").onclick=async e=>{const b=e.target.closest("button");if(!b)return;cons
  if(d.pro&&isAdm()){const x=prompt("На сколько дней выдать Pro?\n0 — забрать Pro, 9999 — навсегда","30");if(x===null)return;const n=Math.max(0,Math.floor(+x)||0),until=n===0?0:n>=9999?4102444800000:Date.now()+n*864e5;await updateDoc(doc(db,"profiles",d.pro),{proUntil:until});toast(n===0?"Pro забран":"Pro выдан")}
  loadAdm();loadFeed()}catch(er){toast(er.code||"Ошибка")}};
 render();
-</script><script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))</script></body></html>
+</script><script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))</script><script>
+(()=>{
+const KEY="lsproj",NOTES=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"],DR=["Кик","Снэр","Хэт","Клэп","Перк"],MIN=[0,2,3,5,7,8,10,12],MAJ=[0,2,4,5,7,9,11,12];
+const z=()=>Array(16).fill(0);
+const ST={bpm:90,sw:0,root:9,minor:1,bars:4,drums:[z(),z(),z(),z(),z()],mel:Array.from({length:8},z),bass:z(),smp:z(),echo:.2,cut:18000,vol:.8,st:0,rev:0,s0:0,s1:1,kit:0,tm:0,bt:0};
+[0,6,10].forEach(i=>ST.drums[0][i]=1);[4,12].forEach(i=>ST.drums[1][i]=1);for(let i=0;i<16;i+=2)ST.drums[2][i]=1;
+try{Object.assign(ST,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+const sv=()=>{try{localStorage.setItem(KEY,JSON.stringify(ST))}catch(e){}};
+let sx=null,live=null,sbuf=null,rbuf=null,run=false,tm=null,nxt=0,stp=0,tab="d";const chips=new Set(),nzc=new WeakMap();
+function nz(c){let b=nzc.get(c);if(!b){b=c.createBuffer(1,c.sampleRate,c.sampleRate);const d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;nzc.set(c,b)}return b}
+function mk(c){const bus=c.createGain(),fl=c.createBiquadFilter(),mg=c.createGain(),dl=c.createDelay(1),fb=c.createGain(),wt=c.createGain();fl.type="lowpass";fl.frequency.value=ST.cut;mg.gain.value=ST.vol;dl.delayTime.value=60/ST.bpm*.75;fb.gain.value=.38;wt.gain.value=ST.echo;bus.connect(fl);fl.connect(mg);fl.connect(dl);dl.connect(wt);wt.connect(mg);dl.connect(fb);fb.connect(dl);mg.connect(c.destination);return{bus,fl,mg,wt,dl}}
+function cx(){if(!sx){sx=new(window.AudioContext||window.webkitAudioContext)();live=mk(sx)}return sx}
+function upd(){if(live){live.fl.frequency.value=ST.cut;live.mg.gain.value=ST.vol;live.wt.gain.value=ST.echo;live.dl.delayTime.value=60/ST.bpm*.75}}
+function env(c,t,v,a,d,o){const g=c.createGain();g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+a+d);g.connect(o);return g}
+const KIT=[{kd:.28,ks:150,ke:42,kt:.14,sn:1800,sv:.5,hv:.22,hd:.05,hf:7500},{kd:.6,ks:110,ke:36,kt:.25,sn:2200,sv:.55,hv:.18,hd:.04,hf:8500},{kd:.22,ks:120,ke:50,kt:.1,sn:1200,sv:.35,hv:.14,hd:.07,hf:5500},{kd:.2,ks:200,ke:50,kt:.08,sn:2600,sv:.6,hv:.26,hd:.045,hf:9000}];
+const TM=[{ty:"triangle",cut:3500,len:.45,v:.28},{ty:"sawtooth",cut:2600,len:.4,v:.16},{ty:"sine",cut:6000,len:1.4,v:.22},{ty:"square",cut:1800,len:.22,v:.12}];
+const BT=[{ty:"sine",cut:900,v:.5},{ty:"sawtooth",cut:500,v:.4},{ty:"square",cut:420,v:.3}];
+function kick(c,t,o){const K=KIT[ST.kit]||KIT[0],g=env(c,t,.9,.003,K.kd,o),s=c.createOscillator();s.frequency.setValueAtTime(K.ks,t);s.frequency.exponentialRampToValueAtTime(K.ke,t+K.kt);s.connect(g);s.start(t);s.stop(t+K.kd+.1)}
+function mtone(c,t,o,m){const T=TM[ST.tm]||TM[0];tone(c,t,o,m,60/ST.bpm*T.len,T.ty,T.v,T.cut)}
+function btone(c,t,o,m){const B=BT[ST.bt]||BT[0];tone(c,t,o,m,60/ST.bpm*.9,B.ty,B.v,B.cut)}
+function prev(){const c=cx();c.resume();const t=c.currentTime+.05,o=live.bus,sc=ST.minor?MIN:MAJ;kick(c,t,o);snare(c,t+.3,o);mtone(c,t+.6,o,60+ST.root+sc[2]);btone(c,t+.9,o,36+ST.root+sc[0])}
+function noise(c,t,o,ty,f,v,d){const s=c.createBufferSource();s.buffer=nz(c);const fl=c.createBiquadFilter();fl.type=ty;fl.frequency.value=f;const g=env(c,t,v,.002,d,o);s.connect(fl);fl.connect(g);s.start(t);s.stop(t+d+.05)}
+function snare(c,t,o){const K=KIT[ST.kit]||KIT[0];noise(c,t,o,"highpass",K.sn,K.sv,.16);const g=env(c,t,.35,.002,.1,o),s=c.createOscillator();s.type="triangle";s.frequency.value=190;s.connect(g);s.start(t);s.stop(t+.15)}
+function clap(c,t,o){[0,.012,.024].forEach(x=>noise(c,t+x,o,"bandpass",1500,.35,.07))}
+function perc(c,t,o){const g=env(c,t,.25,.002,.12,o);[800,540].forEach(f=>{const s=c.createOscillator();s.type="square";s.frequency.value=f;s.connect(g);s.start(t);s.stop(t+.15)})}
+function tone(c,t,o,m,len,ty,v,cut){const g=env(c,t,v,.01,len,o),f=c.createBiquadFilter(),s=c.createOscillator();f.type="lowpass";f.frequency.value=cut;s.type=ty;s.frequency.value=440*2**((m-69)/12);s.connect(f);f.connect(g);s.start(t);s.stop(t+len+.05)}
+function slice(c,t,o,k){const b=ST.rev&&rbuf?rbuf:sbuf,d=b.duration,rt=2**(ST.st/12),l=(ST.s1-ST.s0)*d/8,du=Math.max(.05,l/rt),s=c.createBufferSource(),g=c.createGain();s.buffer=b;s.playbackRate.value=rt;g.gain.setValueAtTime(.9,t);g.gain.setValueAtTime(.9,t+Math.max(0,du-.03));g.gain.linearRampToValueAtTime(0,t+du);s.connect(g);g.connect(o);s.start(t,ST.s0*d+k*l,l)}
+function play(i,t,c,o){const D=ST.drums,sc=ST.minor?MIN:MAJ;
+if(D[0][i])kick(c,t,o);if(D[1][i])snare(c,t,o);if(D[2][i]){const K=KIT[ST.kit]||KIT[0];noise(c,t,o,"highpass",K.hf,K.hv,K.hd)}if(D[3][i])clap(c,t,o);if(D[4][i])perc(c,t,o);
+ST.mel.forEach((r,k)=>{if(r[i])mtone(c,t,o,60+ST.root+sc[7-k])});
+const b=ST.bass[i];if(b)btone(c,t,o,36+ST.root+sc[b-1]);
+const s=ST.smp[i];if(s&&sbuf)slice(c,t,o,s-1)}
+function hl(i,t){setTimeout(()=>{$$("#stu .c.ph").forEach(e=>e.classList.remove("ph"));$$('#stu .c[data-c="'+i+'"]').forEach(e=>e.classList.add("ph"))},Math.max(0,(t-sx.currentTime)*1000))}
+function sched(){const c=sx,sd=60/ST.bpm/4;while(nxt<c.currentTime+.12){play(stp,nxt,c,live.bus);hl(stp,nxt);nxt+=sd*(stp%2?1-ST.sw*.3:1+ST.sw*.3);stp=(stp+1)%16}}
+function sStart(){const c=cx();c.resume();if(typeof playing!=="undefined"&&playing)toggle();run=true;nxt=c.currentTime+.08;stp=0;tm=setInterval(sched,25);$("#s_play").textContent="■"}
+function sStop(){if(!run)return;run=false;clearInterval(tm);$$("#stu .c.ph").forEach(e=>e.classList.remove("ph"));const b=$("#s_play");if(b)b.textContent="▶"}
+async function render(){const sr=44100,sd=60/ST.bpm/4,n=ST.bars*16,c=new OfflineAudioContext(1,Math.ceil((n*sd+1.5)*sr),sr),o=mk(c).bus;let t=0;for(let i=0;i<n;i++){play(i%16,t,c,o);t+=sd*(i%2?1-ST.sw*.3:1+ST.sw*.3)}return c.startRendering()}
+function wav(buf){const ch=buf.getChannelData(0),n=ch.length,sr=buf.sampleRate,ab=new ArrayBuffer(44+n*2),v=new DataView(ab),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));w(0,"RIFF");v.setUint32(4,36+n*2,true);w(8,"WAVEfmt ");v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,sr,true);v.setUint32(28,sr*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,"data");v.setUint32(40,n*2,true);for(let i=0;i<n;i++){const x=Math.max(-1,Math.min(1,ch[i]));v.setInt16(44+i*2,x<0?x*32768:x*32767,true)}return new Blob([ab],{type:"audio/wav"})}
+function revb(c,b){const r=c.createBuffer(b.numberOfChannels,b.length,b.sampleRate);for(let k=0;k<b.numberOfChannels;k++){const s=b.getChannelData(k),d=r.getChannelData(k);for(let i=0;i<s.length;i++)d[i]=s[s.length-1-i]}return r}
+async function useBuf(ab){const c=cx();sbuf=await c.decodeAudioData(ab);rbuf=revb(c,sbuf);wave();toast("Сэмпл загружен: "+sbuf.duration.toFixed(1)+" с")}
+function wave(){const cv=$("#s_wf");if(!cv||!sbuf)return;const g=cv.getContext("2d"),W=cv.width,H=cv.height,d=sbuf.getChannelData(0),n=Math.floor(d.length/W);g.clearRect(0,0,W,H);g.fillStyle=getComputedStyle(document.documentElement).getPropertyValue("--ink");for(let x=0;x<W;x++){let m=0;for(let j=0;j<n;j+=Math.max(1,n>>6)){const v=Math.abs(d[x*n+j]||0);if(v>m)m=v}g.globalAlpha=x/W>=ST.s0&&x/W<=ST.s1?1:.25;g.fillRect(x,H/2-m*H/2,1,Math.max(1,m*H))}}
+/* ---- AI helper (rule based) ---- */
+const G={lofi:{kw:["лоу","lo-fi","lofi","лофи","уютн"],bpm:78,k:[0,7,10],s:[4,12],h:2,sw:.4,mi:1,cut:3200,echo:.25,pc:[]},
+trap:{kw:["трэп","трап","trap","808"],bpm:140,k:[0,3,10],s:[8],h:1,sw:0,mi:1,cut:12000,echo:.15,pc:[]},
+house:{kw:["хаус","house","клуб","танц"],bpm:124,k:[0,4,8,12],s:[4,12],h:2,off:1,sw:0,mi:0,cut:16000,echo:.2,pc:[6,14]},
+dnb:{kw:["драм","dnb","drum"],bpm:170,k:[0,10],s:[4,12],h:1,sw:0,mi:1,cut:14000,echo:.15,pc:[]},
+phonk:{kw:["фонк","phonk","дрифт"],bpm:130,k:[0,3,6,10,13],s:[4,12],h:1,sw:.1,mi:1,cut:7000,echo:.3,pc:[2,6,10,14]},
+pop:{kw:[],bpm:100,k:[0,6,8,14],s:[4,12],h:2,sw:0,mi:0,cut:16000,echo:.15,pc:[]}};
+const GK={"Лоу-фай":"lofi","Трэп":"trap","Хаус":"house","Драм-н-бейс":"dnb","Фонк":"phonk","Поп":"pop"},GN={lofi:"Лоу-фай",trap:"Трэп",house:"Хаус",dnb:"Драм-н-бейс",phonk:"Фонк",pop:"Поп"};
+const SND={"Тёплый":{kit:2,tm:0,bt:0,cut:5000,echo:.2},"Яркий":{kit:0,tm:1,bt:1,cut:16000,echo:.15},"Тёмный":{kit:2,tm:2,bt:2,cut:2200,echo:.35},"808":{kit:1,tm:3,bt:0,cut:12000,echo:.15}};
+const GSND={lofi:"Тёплый",trap:"808",house:"Яркий",dnb:"Яркий",phonk:"Тёмный",pop:"Яркий"};
+let cnt=0,aiText="";const pick={};
+function rng(t){let sd=++cnt*7919;for(const c of t)sd=(sd*31+c.charCodeAt(0))|0;return()=>{sd=(sd+0x6D2B79F5)|0;let x=Math.imul(sd^sd>>>15,1|sd);x^=x+Math.imul(x^x>>>7,61|x);return((x^x>>>14)>>>0)/4294967296}}
+const rand=a=>a[Math.floor(Math.random()*a.length)];
+function mkDrums(gn,R){const g=G[gn],D=[z(),z(),z(),z(),z()];g.k.forEach(i=>D[0][i]=1);if(R()>.6)D[0][[2,5,11,13,15][Math.floor(R()*5)]]=1;g.s.forEach(i=>D[1][i]=1);if(gn==="house")g.s.forEach(i=>D[3][i]=1);for(let i=0;i<16;i++){if(g.off){if(i%4==2)D[2][i]=1}else if(i%g.h==0&&(g.h>1||R()>.3))D[2][i]=1}g.pc.forEach(i=>D[4][i]=1);ST.drums=D;ST.bpm=g.bpm;ST.sw=g.sw;ST.minor=g.mi}
+function mkMel(R,t){if(/груст|мрач|тёмн|темн/.test(t))ST.minor=1;else if(/весел|бодр|светл|радост/.test(t))ST.minor=0;const dens=/бодр|плотн/.test(t)?8:/спок/.test(t)?4:6,M=Array.from({length:8},z);let r=3+Math.floor(R()*3);for(let n=0;n<dens;n++){const q=Math.floor(R()*8)*2+(R()>.7?1:0);r=Math.max(0,Math.min(7,r+Math.round((R()-.5)*3)));if(q<16)M[r][q]=1}ST.mel=M}
+function mkBass(R,st){const B=z();if(st==="Ровный")[0,4,8,12].forEach(i=>B[i]=1);else if(st==="Синкопа")[[0,1],[3,1],[6,5],[10,1],[13,4]].forEach(a=>B[a[0]]=a[1]);else if(st==="Октавы"){for(let i=0;i<16;i+=2)B[i]=(i/2)%2?8:1}else{let n=0;ST.drums[0].forEach((v,i)=>{if(v)B[i]=n++%3==2&&R()>.4?5:1})}ST.bass=B}
+function setSnd(n){const q=SND[n];ST.kit=q.kit;ST.tm=q.tm;ST.bt=q.bt;ST.cut=q.cut;ST.echo=q.echo}
+function gen(kind,val){let v=val;const R=rng(kind+(v||""));
+if(kind==="beat"){v=v||rand(Object.keys(GK));mkDrums(GK[v],R);mkBass(R,"По кику");toast("Биты: "+v+", "+ST.bpm+" BPM")}
+else if(kind==="snd"){v=v||rand(Object.keys(SND));setSnd(v);toast("Звук: "+v)}
+else if(kind==="mood"){v=v||rand(["спокойно","грустно","мрачно","весело","бодро"]);mkMel(R,v);toast("Мелодия: "+v+", "+(ST.minor?"минор":"мажор"))}
+else{v=v||rand(["Ровный","Синкопа","По кику","Октавы"]);mkBass(R,v);toast("Бас: "+v)}
+upd();sv();ui()}
+function aiMake(txt,ch){const t=(txt+" "+ch.join(" ")).toLowerCase(),R=rng(t),has=(...w)=>w.some(x=>t.includes(x));let gn="pop";for(const k in G)if(G[k].kw.some(w=>t.includes(w)))gn=k;
+mkDrums(gn,R);let b=ST.bpm;if(has("быстр","энерг","бодр"))b*=1.12;if(has("медленн","спокой","расслаб"))b*=.88;ST.bpm=Math.round(Math.min(180,Math.max(60,b)));
+mkMel(R,t);mkBass(R,has("ровн")?"Ровный":has("синкоп")?"Синкопа":has("октав")?"Октавы":"По кику");
+let sn=GSND[gn];if(has("уютн","тёпл","тепл"))sn="Тёплый";if(has("ярк"))sn="Яркий";if(has("тёмн","темн","мрач"))sn="Тёмный";if(has("808"))sn="808";setSnd(sn);
+if(has("приглуш","глухо"))ST.cut=2500;if(has("эхо","реверб","простран"))ST.echo=.4;
+ST.smp=z();if(sbuf){const chop=has("нарез","семпл","сэмпл","ремикс","chop");for(let i=0;i<16;i++){const v=chop?(i%2==0?1+Math.floor(R()*8):0):(i%4==0?i/4+1:0);ST.smp[i]=v&&R()>.12?v:0}}
+upd();sv();ui();toast("Собрал: "+GN[gn]+", "+ST.bpm+" BPM, "+(ST.minor?"минор":"мажор")+", звук: "+sn)}
+/* ---- UI ---- */
+const host=$("#stu");
+const cell=(g,r,c,on,tx)=>`<button class="c${on?" on":""}${c%4==0?" q":""}" data-g="${g}" data-r="${r}" data-c="${c}">${tx||""}</button>`;
+const bin=(g,rows,nm,get)=>`<div class="gw"><div class="g">${rows.map(r=>`<b>${nm(r)}</b>`+Array.from({length:16},(_,c)=>cell(g,r,c,get(r)[c])).join("")).join("")}</div></div>`;
+const cyc=(g,nm,arr)=>`<div class="gw"><div class="g"><b>${nm}</b>${arr.map((v,c)=>cell(g,0,c,v,v||"")).join("")}</div></div>`;
+const sl=(id,lb,mn,mx,v,st)=>`<div class="eq"><span>${lb}</span><input type="range" id="${id}" min="${mn}" max="${mx}" step="${st||1}" value="${v}"></div>`;
+function ui(){const sc=ST.minor?MIN:MAJ;
+host.innerHTML=`<div class="card" style="margin-top:0"><div class="row" style="margin:0 0 10px;align-items:center"><button class="play" id="s_play" style="width:52px;height:52px;font-size:18px">▶</button><div style="flex:1;min-width:150px"><div class="tm"><span>Темп</span><span id="s_bpl">${ST.bpm}</span></div><input type="range" id="s_bpm" min="60" max="180" value="${ST.bpm}"></div></div>
+<div class="row" style="margin:0"><select class="fi" id="s_rt" style="width:auto;margin:0">${NOTES.map((n,i)=>`<option value="${i}"${i==ST.root?" selected":""}>${n}</option>`).join("")}</select><button class="chip" id="s_md">${ST.minor?"минор":"мажор"}</button><select class="fi" id="s_br" style="width:auto;margin:0">${[2,4,8].map(n=>`<option value="${n}"${n==ST.bars?" selected":""}>${n} такта</option>`).join("")}</select></div>
+<div class="row"><button class="chip" id="s_wv">⬇ WAV</button><button class="chip on" id="s_pub">⇪ В ленту</button></div></div>
+<div class="row" id="s_tabs">${[["d","Биты"],["m","Синт"],["s","Сэмпл"],["t","Звук"],["a","ИИ"],["x","Мастер"]].map(t=>`<button class="chip" data-tab="${t[0]}">${t[1]}${t[0]=="a"&&!S.pro?" 🔒":""}</button>`).join("")}</div><div class="card" id="s_b"></div>`;tabUi()}
+function tabUi(){$$("#s_tabs .chip").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));const sc=ST.minor?MIN:MAJ,b=$("#s_b");let h="";
+if(tab==="d")h=bin("d",[0,1,2,3,4],r=>DR[r],r=>ST.drums[r])+'<p class="note">Тапай клетки, чтобы расставить удары. Светлые клетки — сильные доли.</p>';
+if(tab==="m")h=bin("m",[0,1,2,3,4,5,6,7],r=>NOTES[(ST.root+sc[7-r])%12],r=>ST.mel[r])+cyc("b","Бас",ST.bass)+'<p class="note">Бас: тапай клетку, чтобы выбрать ступень лада (1–8).</p>';
+if(tab==="s")h=`<input class="fi" type="file" id="s_f" accept="audio/*"><select class="fi" id="s_l"><option value="">…или выбери трек из библиотеки</option>${lib.map((t,i)=>t.hidden||!t.url?"":`<option value="${i}">${esc(t.n)}</option>`).join("")}</select><canvas id="s_wf" width="300" height="60" style="width:100%;height:60px;margin-top:10px;background:var(--bg);border-radius:12px"></canvas>${sl("s_s0","Начало",0,95,Math.round(ST.s0*100))}${sl("s_s1","Конец",5,100,Math.round(ST.s1*100))}${sl("s_st","Тон",-12,12,ST.st)}<div class="row"><button class="chip${ST.rev?" on":""}" id="s_rv">реверс</button>${[1,2,3,4,5,6,7,8].map(k=>`<button class="chip" data-pad="${k-1}">${k}</button>`).join("")}</div>${cyc("s","Нарезка",ST.smp)}<p class="note">Сэмпл делится на 8 кусочков. Расставь номера кусочков по клеткам, и получится ремикс.</p>`;
+if(tab==="t")h=[["Ударные","kit",["Классика","808","Лоу-фай","Жёсткий"]],["Тембр синта","tm",["Мягкий","Яркий","Пад","Пульс"]],["Бас","bt",["Саб","Грязный","Квадрат"]]].map(g=>`<b>${g[0]}</b><div class="row" style="margin:6px 0 14px">${g[2].map((v,i)=>`<button class="chip${ST[g[1]]===i?" on":""}" data-sd="${g[1]}|${i}">${v}</button>`).join("")}</div>`).join("")+'<p class="note">Выбери звучание: прозвучит короткое превью (кик, снэр, нота, бас).</p>';
+if(tab==="a")h=`<textarea class="fi" id="s_ap" rows="3" placeholder="Опиши ремикс: например, грустный лоу-фай с эхом и нарезкой сэмпла" style="resize:none;margin-top:0">${esc(aiText)}</textarea><button class="cta" id="s_go" style="width:100%;margin-top:10px">Собрать всё по описанию</button><p class="note">Или собери по частям: выбери вариант и нажми кнопку, обновится только эта часть.</p>`+[["Биты","beat",Object.keys(GK),"Собрать биты"],["Звук","snd",Object.keys(SND),"Подобрать звук"],["Мелодия","mood",["спокойно","грустно","мрачно","весело","бодро"],"Построить мелодию"],["Басы","bs",["Ровный","Синкопа","По кику","Октавы"],"Сделать бас"]].map(c=>`<div style="margin-top:14px"><b>${c[0]}</b><div class="row" style="margin:6px 0 0">${c[2].map(v=>`<button class="chip${pick[c[1]]===v?" on":""}" data-pk="${c[1]}|${v}">${v}</button>`).join("")}<button class="chip on" data-gen="${c[1]}">${c[3]}</button></div></div>`).join("")+'<p class="note">Помощник собирает проект по правилам: подбирает темп, лад, ударные, бас, звук и нарезку. Каждое нажатие даёт новый вариант. Настоящую нейросеть подключим позже.</p>';
+if(tab==="x")h=sl("s_ec","Эхо",0,80,Math.round(ST.echo*100))+sl("s_cu","Фильтр",300,18000,ST.cut,100)+sl("s_vo","Громкость",0,100,Math.round(ST.vol*100))+sl("s_sw","Свинг",0,100,Math.round(ST.sw*100))+'<div class="row"><button class="chip" id="s_clr">очистить всё</button></div>';
+b.innerHTML=h;if(tab==="s")setTimeout(wave,0)}
+const MAP={s_bpm:["bpm",1],s_ec:["echo",.01],s_cu:["cut",1],s_vo:["vol",.01],s_sw:["sw",.01],s_st:["st",1],s_s0:["s0",.01],s_s1:["s1",.01]};
+host.addEventListener("input",e=>{const t=e.target,m=MAP[t.id];if(t.id==="s_ap"){aiText=t.value;return}if(!m)return;ST[m[0]]=+t.value*m[1];if(t.id==="s_s0"&&ST.s0>ST.s1-.05)ST.s0=ST.s1-.05;if(t.id==="s_s1"&&ST.s1<ST.s0+.05)ST.s1=ST.s0+.05;if(t.id==="s_bpm")$("#s_bpl").textContent=ST.bpm;if(t.id==="s_s0"||t.id==="s_s1")wave();upd();sv()});
+host.addEventListener("change",async e=>{const t=e.target;try{if(t.id==="s_rt"){ST.root=+t.value;sv()}if(t.id==="s_br"){ST.bars=+t.value;sv()}
+if(t.id==="s_f"&&t.files[0]){if(t.files[0].size>30e6)return toast("Файл больше 30 МБ");await useBuf(await t.files[0].arrayBuffer())}
+if(t.id==="s_l"&&t.value!==""){const r=await fetch(lib[+t.value].url);await useBuf(await r.arrayBuffer())}}catch(er){toast("Не удалось открыть файл")}});
+host.addEventListener("click",async e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+if(b.classList.contains("c")){const r=+d.r,c=+d.c;let v;if(d.g==="d")v=ST.drums[r][c]^=1;else if(d.g==="m")v=ST.mel[r][c]^=1;else if(d.g==="b")v=ST.bass[c]=(ST.bass[c]+1)%9;else v=ST.smp[c]=(ST.smp[c]+1)%9;b.classList.toggle("on",!!v);if(d.g==="b"||d.g==="s")b.textContent=v||"";sv();return}
+if(d.tab){if(d.tab==="a"&&!S.pro)return ask("Помощник — в Pro","Помощник собирает ремикс по твоему описанию. Pro выдаёт администрация LazySound.");tab=d.tab;return tabUi()}
+if(d.pk){const[k,v]=d.pk.split("|");pick[k]=pick[k]===v?"":v;return tabUi()}
+if(d.gen)return gen(d.gen,pick[d.gen]);
+if(d.sd){const[k,i]=d.sd.split("|");ST[k]=+i;sv();tabUi();return prev()}
+if(d.pad!==undefined){if(!sbuf)return toast("Сначала загрузи сэмпл");const c=cx();c.resume();return slice(c,c.currentTime,live.bus,+d.pad)}
+const id=b.id;
+if(id==="s_play")return run?sStop():sStart();
+if(id==="s_md"){ST.minor^=1;b.textContent=ST.minor?"минор":"мажор";sv();return tab==="m"?tabUi():0}
+if(id==="s_rv"){ST.rev^=1;b.classList.toggle("on",!!ST.rev);return sv()}
+if(id==="s_go")return aiMake($("#s_ap").value,Object.values(pick).filter(Boolean));
+if(id==="s_clr"){ST.drums=[z(),z(),z(),z(),z()];ST.mel=Array.from({length:8},z);ST.bass=z();ST.smp=z();sv();return toast("Проект очищен")}
+if(id==="s_wv"||id==="s_pub"){try{
+ let nm="";if(id==="s_pub"){if(!user)return toast("Сначала войди через Google");nm=prompt("Название трека");if(!nm)return;if(!confirm("Публикуя трек, ты подтверждаешь, что имеешь права на весь использованный материал (в том числе на загруженные сэмплы), и принимаешь Правила. Администрация не несёт ответственности за контент пользователей. Продолжить?"))return}
+ toast("Рендерю…");const blob=wav(await render());
+ if(id==="s_wv"){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="lazysound-remix.wav";a.click();return toast("Готово")}
+ if(blob.size>15e6)return toast("Трек больше 15 МБ, уменьши число тактов");await window.pubBlob(nm,blob)}catch(er){toast("Ошибка рендера")}}});
+const g0=window.go;window.go=v=>{if(v!=="studio")sStop();g0(v)};
+ui();
+})();
+</script></body></html>
