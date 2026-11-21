@@ -3,6 +3,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>LazySound</title>
 <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0a0a0a">
+<meta name="description" content="LazySound: музыка, которая не напрягает. Слушай, загружай свои треки в общую ленту и собирай плейлисты.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="LazySound"><meta property="og:title" content="LazySound: музыка, которая не напрягает">
+<meta property="og:description" content="Слушай, загружай свои треки в общую ленту и собирай плейлисты. Бесплатно.">
+<meta property="og:url" content="https://holykid99.github.io/LazySoundd/"><meta property="og:image" content="https://holykid99.github.io/LazySoundd/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0a0a0a;--s1:#161616;--s2:#242424;--ink:#f5f5f5;--mut:#8c8c8c;--inv:#0a0a0a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
@@ -121,13 +126,14 @@ a.chip{text-decoration:none;display:inline-block}
 
 <main class="v on" id="v-home">
 <section class="hero"><canvas id="cv"></canvas>
-<div class="np"><h1 id="tt">Нажми play</h1><p id="ta">Музыка собирается прямо в браузере</p>
+<div class="np"><h1 id="tt">Выбери трек</h1><p id="ta">Открой Ленту или загрузи свою музыку</p>
 <input type="range" id="sk" min="0" max="1000" value="0" aria-label="Перемотка">
 <div class="tm"><span id="t1">0:00</span><span id="t2">0:00</span></div>
 <div class="ctl"><button class="ib" id="shf" aria-label="Перемешать">⇄</button><button class="ib" id="pv" aria-label="Назад">⏮</button>
 <button class="play" id="pl" aria-label="Играть">▶</button><button class="ib" id="nx" aria-label="Дальше">⏭</button><button class="ib" id="lk" aria-label="Нравится">♡</button></div>
 <div class="row" id="modes"></div><div class="tm" style="margin-top:10px" id="sknote"></div></div></section>
 
+<div class="card" style="background:var(--ink);color:var(--inv)"><h3 style="margin-bottom:4px">Расскажи друзьям 🎧</h3><p style="margin:0 0 12px;opacity:.7;font-size:14px">LazySound: музыка, которая не напрягает. Чем больше людей в ленте, тем больше новых треков.</p><div class="row" style="margin:0"><button class="cta" id="pshare" style="background:var(--inv);color:var(--ink)">Поделиться</button><button class="chip" id="pcopy" style="border-color:var(--inv);color:var(--inv)">Скопировать ссылку</button></div></div>
 <label class="drop" for="file" id="dz"><b>Загрузи свою музыку</b><span>Перетащи mp3, wav или m4a сюда или тапни</span><div class="bar" id="pb"><i id="pi"></i></div></label>
 <input type="file" id="file" accept="audio/*" multiple hidden>
 
@@ -148,7 +154,7 @@ a.chip{text-decoration:none;display:inline-block}
 <div class="card law" id="lawbody"></div></main>
 <main class="v" id="v-shop"><button class="chip" data-back>← Назад</button><h2>Магазин</h2>
 <div class="card"><h3>Твой баланс</h3><div style="font:800 36px Syne,sans-serif" id="bal">0 LC</div><button class="cta" id="bonus" style="margin-top:12px;width:100%">Забрать бонус +5 LC</button></div>
-<div class="card"><h3>Pro на 30 дней</h3><p style="margin:0 0 10px;color:var(--mut)">Вайб-лаб, «Галактика», полный эквалайзер, безлимитные пропуски и lossless.</p><button class="cta" id="buypro" style="width:100%">Получить Pro за 299 LC</button><p class="note" id="proinfo"></p></div>
+<div class="card"><h3>Pro на 30 дней</h3><p style="margin:0 0 10px;color:var(--mut)">Вайб-лаб, «Галактика», полный эквалайзер, безлимитные пропуски и lossless.</p><button class="cta" id="buypro" style="width:100%">Pro за 299 LC · скоро</button><p class="note" id="proinfo"></p></div>
 <h2>Пополнить LC</h2><div class="plans" id="packs"></div>
 <div class="card"><b>Оплата будет доступна с 1 по 5 декабря 2026.</b><p class="note" style="margin-bottom:0">Сейчас LC можно получать ежедневным бонусом. 1 LC = 1 ₽, окончательные цены объявим при запуске оплаты.</p></div></main>
 <main class="v" id="v-lab"><h2>Вайб-лаб</h2>
@@ -171,7 +177,7 @@ a.chip{text-decoration:none;display:inline-block}
 <div class="card"><h3>Приложение</h3><button class="cta" id="inst" style="display:none;width:100%;margin-bottom:6px">Установить приложение</button><div class="set"><span>Поделиться приложением</span><button class="chip" id="shr">Поделиться</button></div><div class="set"><span>Сообщить о проблеме</span><a class="chip" href="mailto:lazyperson1444@gmail.com?subject=LazySound">Написать</a></div></div>
 <div class="card"><h3>Документы</h3><div class="set"><span>Правила использования</span><button class="chip" data-lawopen="t">Читать</button></div><div class="set"><span>Политика конфиденциальности</span><button class="chip" data-lawopen="p">Читать</button></div><div class="set"><span>Правообладателям</span><button class="chip" data-lawopen="c">Читать</button></div></div>
 <h2>Тарифы</h2><div class="plans">
-<div class="pc"><h3>Free</h3><div class="pr">0 ₽</div><ul><li>Плеер и библиотека</li><li>Визуал: столбики, волна, кольца</li><li>3 пропуска и 3 загрузки</li><li class="no">Вайб-лаб</li><li class="no">Галактика и эквалайзер</li></ul></div>
+<div class="pc"><h3>Free</h3><div class="pr">0 ₽</div><ul><li>Плеер и библиотека</li><li>Визуал: столбики, волна, кольца</li><li>3 пропуска и 60 загрузок</li><li class="no">Вайб-лаб</li><li class="no">Галактика и эквалайзер</li></ul></div>
 <div class="pc pro"><h3>Pro</h3><div class="pr">299 LC<small> / 30 дней</small></div><ul><li>Всё из Free</li><li>Вайб-лаб</li><li>Режим «Галактика»</li><li>Полный эквалайзер</li><li>Безлимит и lossless</li></ul><button class="cta" data-up>Попробовать Pro</button></div></div></main>
 </div>
 
@@ -194,13 +200,7 @@ const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&qu
 let S={pro:false,name:"Лентяй",theme:"dark",likes:[],mins:0,plays:0,ups:0,lc:0,bonusDay:"",proUntil:0};
 try{Object.assign(S,JSON.parse(localStorage.getItem("ls")||"{}"))}catch(e){}
 const save=()=>{try{localStorage.setItem("ls",JSON.stringify(S))}catch(e){}};
-const lib=[
-{id:"s0",n:"Неон после дождя",a:"Мира Вега",bpm:98,root:2,maj:false,wave:"sawtooth",cut:1400},
-{id:"s1",n:"Рассвет на крыше",a:"Свет и Тень",bpm:112,root:7,maj:true,wave:"triangle",cut:3200},
-{id:"s2",n:"Ночной автобус",a:"Лётчик",bpm:84,root:9,maj:false,wave:"triangle",cut:900},
-{id:"s3",n:"Горячий асфальт",a:"Квартал 9",bpm:128,root:4,maj:false,wave:"square",cut:2000},
-{id:"s4",n:"Тёплый свет",a:"Мира Вега",bpm:76,root:0,maj:true,wave:"sine",cut:2500},
-{id:"s5",n:"Сигнал из метро",a:"Лётчик",bpm:140,root:11,maj:false,wave:"sawtooth",cut:2800}];
+const lib=[{id:"lab",n:"Вайб-лаб",a:"живой синтез",bpm:98,root:2,maj:false,wave:"sawtooth",cut:1400,hidden:1}];
 let cur=-1,playing=false,skips=3,mode="bars",labOn=false,lab={e:.5,m:.5},shuf=false,view="home",flt="all",sleepT=0,sleepI=0;
 let ctx,an,master,bus,bass,treb,timer,step=0,deg=4,t0=0,data=new Uint8Array(128);
 const au=new Audio(),DUR=180;
@@ -219,13 +219,13 @@ function renderModes(){$("#modes").innerHTML=MODES.map(m=>`<button class="chip $
 $("#modes").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.p==="1"&&!S.pro)return ask("«Галактика» — в Pro","Частицы пульсируют под бас.");mode=b.dataset.m;renderModes()};
 
 function rl(){const q=$("#q").value.toLowerCase();
-const L=lib.map((t,i)=>[t,i]).filter(([t])=>(flt==="all"||(flt==="my"&&t.type==="f")||(flt==="fav"&&S.likes.includes(t.id)))&&(t.n+t.a).toLowerCase().includes(q));
+const L=lib.map((t,i)=>[t,i]).filter(([t])=>!t.hidden&&(flt==="all"||(flt==="my"&&t.type==="f")||(flt==="fav"&&S.likes.includes(t.id)))&&(t.n+t.a).toLowerCase().includes(q));
 $("#list").innerHTML=L.length?L.map(([t,i])=>`<div class="tr ${i===cur?"on":""}"><button class="tr" style="padding:0" data-i="${i}"><div class="art" style="${art(i)}"></div><div class="m"><b>${esc(t.n)}</b><small>${esc(t.a)}</small></div></button><button class="ib" data-l="${t.id}" aria-label="Нравится">${S.likes.includes(t.id)?"♥":"♡"}</button></div>`).join(""):'<p style="color:var(--mut)">Пусто. Загрузи трек на вкладке «Плеер».</p>';
 $("#flt").innerHTML=[["all","Все"],["my","Мои"],["fav","Любимые"]].map(f=>`<button class="chip ${flt===f[0]?"on":""}" data-f="${f[0]}">${f[1]}</button>`).join("")}
 $("#q").oninput=rl;
 $("#flt").onclick=e=>{const b=e.target.closest("[data-f]");if(b){flt=b.dataset.f;rl()}};
 $("#list").onclick=e=>{const l=e.target.closest("[data-l]");if(l)return like(l.dataset.l);const b=e.target.closest("[data-i]");if(b)choose(+b.dataset.i)};
-function like(id){id=id||(lib[cur]&&lib[cur].id);if(!id)return;const k=S.likes.indexOf(id);k<0?S.likes.push(id):S.likes.splice(k,1);save();rl();prof();lkb()}
+function like(id){id=id||(lib[cur]&&lib[cur].id);if(!id||id==="lab")return;const k=S.likes.indexOf(id);k<0?S.likes.push(id):S.likes.splice(k,1);save();rl();prof();lkb()}
 const lkb=()=>{$("#lk").textContent=cur>=0&&S.likes.includes(lib[cur].id)?"♥":"♡";$("#lk").classList.toggle("on",$("#lk").textContent==="♥")};
 $("#lk").onclick=()=>like();
 
@@ -249,11 +249,12 @@ S.plays++;save();playing=true;
 if(t.type==="f"){au.src=t.url;au.play()}else{au.pause();tick()}
 ui();rl();lkb();prof()}
 function ui(){$("#pl").textContent=playing?"⏸":"▶";$("#mp").textContent=playing?"⏸":"▶"}
-function toggle(){if(cur<0)return choose(0);ctx.resume();playing=!playing;if(playing){lib[cur].type==="f"?au.play():(t0=performance.now()-(+$("#sk").value/1000)*DUR*1000,tick())}else{au.pause();clearTimeout(timer)}ui()}
+function toggle(){if(cur<0){const v=vis(1);if(v<0){toast("Загрузи трек или открой Ленту");return go("feed")}return choose(v)}ctx.resume();playing=!playing;if(playing){lib[cur].type==="f"?au.play():(t0=performance.now()-(+$("#sk").value/1000)*DUR*1000,tick())}else{au.pause();clearTimeout(timer)}ui()}
 $("#pl").onclick=toggle;$("#mp").onclick=toggle;$("#mini").onclick=e=>{if(e.target.tagName==="B")go("home")};
+function vis(d){const idx=[];lib.forEach((t,i)=>{if(!t.hidden)idx.push(i)});if(!idx.length)return -1;if(d===0)return idx[Math.floor(Math.random()*idx.length)];if(cur<0||lib[cur].hidden)return d>0?idx[0]:idx[idx.length-1];const p=idx.indexOf(cur);return idx[(p+d+idx.length)%idx.length]}
 function next(manual){if(manual&&!S.pro){if(skips<=0)return ask("Пропуски закончились","В Free доступно 3 пропуска. В Pro без ограничений.");skips--;note()}
-choose(shuf?Math.floor(Math.random()*lib.length):(cur+1)%lib.length)}
-$("#nx").onclick=()=>next(true);$("#pv").onclick=()=>choose(cur<=0?0:cur-1);
+const v=shuf?vis(0):vis(1);if(v<0)return toast("Нет треков");choose(v)}
+$("#nx").onclick=()=>next(true);$("#pv").onclick=()=>{const v=vis(-1);if(v>=0)choose(v)};
 $("#shf").onclick=()=>{shuf=!shuf;$("#shf").classList.toggle("on",shuf)};
 au.onended=()=>next(false);
 $("#sk").oninput=e=>{if(cur>=0&&lib[cur].type==="f"&&au.duration)au.currentTime=e.target.value/1000*au.duration;else if(cur>=0)t0=performance.now()-e.target.value/1000*DUR*1000};
@@ -268,7 +269,7 @@ else if(!S.pro&&o.length===2)0};
 
 function upload(files){const fs=[...files].filter(f=>f.type.startsWith("audio/")||/\.(mp3|wav|m4a|ogg|flac)$/i.test(f.name));
 if(!fs.length)return toast("Нужен аудиофайл");
-if(!S.pro&&S.ups+fs.length>3)return ask("Лимит загрузок","В Free можно загрузить 3 трека. В Pro без ограничений.");
+if(!S.pro&&S.ups+fs.length>60)return ask("Лимит загрузок","В Free можно загрузить 60 треков. В Pro без ограничений.");
 const pb=$("#pb"),pi=$("#pi");pb.style.display="block";let p=0;
 const iv=setInterval(()=>{p+=8;pi.style.width=p+"%";if(p>=100){clearInterval(iv);pb.style.display="none";pi.style.width="0";
 fs.forEach(f=>{const url=URL.createObjectURL(f);lib.push({id:"u"+Date.now()+Math.random(),n:f.name.replace(/\.[^.]+$/,""),a:"Моя загрузка",type:"f",url});S.ups++});
@@ -304,11 +305,11 @@ const LAW={
 t:`<h3>Правила использования LazySound</h3><p>Редакция от 19 ноября 2026 г.</p>
 <h3>1. Общее</h3><p>LazySound — сервис для прослушивания музыки и обмена ею. Пользуясь приложением, ты соглашаешься с этими правилами и Политикой конфиденциальности. Сервис предназначен для лиц от 14 лет.</p>
 <h3>2. Аккаунт</h3><p>Вход выполняется через аккаунт Google. Ты отвечаешь за действия со своего аккаунта.</p>
-<h3>3. Твой контент и ответственность</h3><p>Загружая трек, ты действуешь на свою ответственность и подтверждаешь, что имеешь права на него или разрешение правообладателя. Права на трек остаются у автора. Ты разрешаешь LazySound хранить трек и воспроизводить его в приложении. <b>Администрация LazySound не проверяет права на загружаемую музыку, не претендует на права на неё и не несёт ответственности за контент пользователей</b> в пределах, допустимых законом.</p>
+<h3>3. Твой контент и ответственность</h3><p>Загружая трек, ты действуешь на свою ответственность и подтверждаешь, что имеешь права на него или разрешение правообладателя. Права на трек остаются у автора. Ты разрешаешь LazySound хранить трек и воспроизводить его в приложении. <b>Администрация LazySound не проверяет права на загружаемую музыку, не претендует на права на неё и не несёт ответственности за контент пользователей</b> в пределах, допустимых законом. На один аккаунт можно загрузить до 60 треков.</p>
 <h3>4. Что запрещено</h3><p>Чужая музыка без разрешения; оскорбления, травля, экстремизм, насилие, порнография; вредоносные файлы и спам; попытки взломать сервис или получить доступ к чужим данным.</p>
 <h3>5. Модерация</h3><p>Треки публикуются после проверки. Администрация вправе отклонить или удалить любой трек и заблокировать аккаунт при нарушении правил.</p>
 <h3>6. Жалобы</h3><p>Нашёл нарушение: нажми ⚑ у трека или напиши нам (вкладка «Правообладателям»). Мы рассмотрим жалобу и при необходимости удалим трек.</p>
-<h3>7. LC и Pro</h3><p>LC (Лень-коины) — внутренняя валюта приложения. Это не деньги: LC не выводятся и не обмениваются на деньги. За LC можно получить Pro на 30 дней. Пополнение LC за деньги будет доступно с 1 по 5 декабря 2026 г. Условия оплаты и возврата опубликуем до запуска оплаты.</p>
+<h3>7. LC и Pro</h3><p>LC (Лень-коины) — внутренняя валюта приложения. Это не деньги: LC не выводятся и не обмениваются на деньги. Pro пока выдаёт администрация, позже его можно будет получить за LC. Пополнение LC за деньги будет доступно с 1 по 5 декабря 2026 г. Условия оплаты и возврата опубликуем до запуска оплаты.</p>
 <h3>8. Без гарантий</h3><p>Сервис работает «как есть»: функции могут меняться, а доступ может временно прерываться.</p>
 <h3>9. Изменения и связь</h3><p>Мы можем обновлять правила, актуальная версия всегда здесь. Вопросы: <b>lazyperson1444@gmail.com</b></p>`,
 p:`<h3>Политика конфиденциальности</h3><p>Редакция от 19 ноября 2026 г.</p>
@@ -328,16 +329,19 @@ function law(k){$$("#lawtabs .chip").forEach(b=>b.classList.toggle("on",b.datase
 $("#lawtabs").onclick=e=>{const b=e.target.closest("[data-lt]");if(b)law(b.dataset.lt)};
 function shopDraw(){const lc=S.lc||0,t=new Date().toISOString().slice(0,10);$("#hlc").textContent=lc+" LC";$("#bal").textContent=lc+" LC";$("#wbal").textContent=lc+" LC";
 $("#bonus").textContent=S.bonusDay===t?"Бонус получен, завтра ещё +5":"Забрать бонус +5 LC";
-$("#proinfo").textContent=S.proUntil>Date.now()?"Pro активен до "+new Date(S.proUntil).toLocaleDateString("ru-RU"):"Pro сейчас не активен";
+$("#proinfo").textContent=S.proUntil>Date.now()?(S.proUntil>4e12?"Pro активен навсегда":"Pro активен до "+new Date(S.proUntil).toLocaleDateString("ru-RU")):"Pro сейчас не активен. Его выдаёт администрация LazySound, покупка за LC откроется вместе с оплатой.";
 const pk=$("#packs");if(!pk.children.length)pk.innerHTML=[100,300,500,1000].map(n=>`<div class="pc"><h3>${n} LC</h3><div class="pr" style="font-size:18px">${n} ₽</div><button class="chip" disabled style="opacity:.6;width:100%">1–5 декабря</button></div>`).join("")}
 $("#bonus").onclick=()=>{if(!user)return toast("Войди через Google, чтобы получать бонус");const t=new Date().toISOString().slice(0,10);if(S.bonusDay===t)return toast("Бонус уже получен, приходи завтра");S.lc=(S.lc||0)+5;S.bonusDay=t;save();shopDraw();dispatchEvent(new Event("lsave"));toast("+5 LC")};
-$("#buypro").onclick=()=>{if(!user)return toast("Сначала войди через Google");if((S.lc||0)<299)return toast("Не хватает LC. Оплата откроется 1–5 декабря");S.lc-=299;S.proUntil=Math.max(Date.now(),S.proUntil||0)+30*864e5;save();setPro(true,1);shopDraw();dispatchEvent(new Event("lsave"));toast("Pro на 30 дней активирован")};
+$("#buypro").onclick=()=>toast("Покупка Pro за LC откроется вместе с оплатой 1–5 декабря");
 let dip=null;addEventListener("beforeinstallprompt",e=>{e.preventDefault();dip=e;$("#inst").style.display="block"});
 $("#inst").onclick=async()=>{if(!dip)return;dip.prompt();await dip.userChoice;dip=null;$("#inst").style.display="none"};
 addEventListener("appinstalled",()=>{$("#inst").style.display="none"});
-$("#shr").onclick=async()=>{const u="https://holykid99.github.io/LazySoundd/";try{if(navigator.share)await navigator.share({title:"LazySound",text:"Музыка, которая не напрягает",url:u});else{await navigator.clipboard.writeText(u);toast("Ссылка скопирована")}}catch(e){}};
+const SITE="https://holykid99.github.io/LazySoundd/",PITCH="Слушаю LazySound: музыка, которая не напрягает. Загружай свои треки и собирай плейлисты 🎧";
+async function shareApp(){try{if(navigator.share)await navigator.share({title:"LazySound",text:PITCH,url:SITE});else{await navigator.clipboard.writeText(PITCH+" "+SITE);toast("Приглашение скопировано")}}catch(e){}}
+$("#shr").onclick=shareApp;$("#pshare").onclick=shareApp;
+$("#pcopy").onclick=async()=>{try{await navigator.clipboard.writeText(PITCH+" "+SITE);toast("Приглашение скопировано")}catch(e){toast(SITE)}};
 document.addEventListener("click",e=>{
-if(e.target.closest("[data-up]"))ask("Pro за 299 LC на 30 дней","Вайб-лаб, «Галактика», эквалайзер, безлимит и lossless. LC можно получить в магазине.");
+if(e.target.closest("[data-up]"))ask("Это функция Pro","Вайб-лаб, «Галактика», эквалайзер, безлимит и lossless. Сейчас Pro выдаёт администрация, покупка за LC откроется 1–5 декабря.");
 if(e.target.closest("[data-back]"))go("me");
 if(e.target.closest("[data-shop]"))go("shop");
 const l=e.target.closest("[data-lawopen]");if(l){if(l.closest("#gate"))$("#gate").classList.add("off");law(l.dataset.lawopen);go("law")}});
@@ -385,11 +389,11 @@ function render(){
   g("in").onclick=()=>g("gate").classList.remove("off")}
 }
 async function pull(){try{const r=await getDoc(doc(db,"users",user.uid));if(r.exists()){const d=r.data();
- S.likes=[...new Set([...S.likes.filter(i=>i[0]==="s"),...(d.likes||[])])];S.mins=Math.max(S.mins,d.mins||0);S.plays=Math.max(S.plays,d.plays||0);if(d.lc!=null)S.lc=d.lc;if((d.bonusDay||"")>(S.bonusDay||""))S.bonusDay=d.bonusDay;S.proUntil=Math.max(S.proUntil||0,d.proUntil||0);
+ S.likes=[...new Set([...S.likes.filter(i=>i[0]==="s"),...(d.likes||[])])];S.mins=Math.max(S.mins,d.mins||0);S.plays=Math.max(S.plays,d.plays||0);if(d.lc!=null)S.lc=d.lc;if((d.bonusDay||"")>(S.bonusDay||""))S.bonusDay=d.bonusDay;
  if(d.name&&S.name==="Лентяй")S.name=d.name;if(d.theme){S.theme=d.theme;document.documentElement.dataset.theme=d.theme}}
  else if(S.name==="Лентяй"&&user.displayName)S.name=user.displayName.split(" ")[0];
  save();$("#nm").value=S.name;rl();lkb();prof();shopDraw();applyPro();push()}catch(e){console.warn("sync",e.code)}}
-async function push(){if(!user)return;try{await setDoc(doc(db,"users",user.uid),{name:S.name,likes:S.likes.filter(i=>i[0]==="s"),mins:S.mins,plays:S.plays,theme:S.theme,lc:S.lc||0,bonusDay:S.bonusDay||"",proUntil:S.proUntil||0,t:Date.now()},{merge:true})}catch(e){}}
+async function push(){if(!user)return;try{await setDoc(doc(db,"users",user.uid),{name:S.name,likes:S.likes.filter(i=>i[0]==="s"),mins:S.mins,plays:S.plays,theme:S.theme,lc:S.lc||0,bonusDay:S.bonusDay||"",t:Date.now()},{merge:true})}catch(e){}}
 try{await setPersistence(auth,browserLocalPersistence)}catch(e){}
 onAuthStateChanged(auth,u=>{const was=user;user=u;render();prof();fx();
  if(u){try{localStorage.setItem("lsu","1")}catch(e){}g("gate").classList.add("off");pull();if(!was)toast("Привет, "+(u.displayName||"друг"))}
@@ -407,10 +411,10 @@ const byId=id=>feed.find(t=>t.id===id)||mine.find(t=>t.id===id);
 const row=(t,x)=>`<div class="tr"><button class="tr" style="padding:0" data-fp="${t.id}"><div class="art" style="${art(sid(t))}"></div><div class="m"><b>${esc(t.title)}</b><small>${esc(t.uname||"")}${ver.has(t.uid)?' <span class="vb">✓</span>':""}</small></div></button>${x||""}</div>`;
 function playT(t){let i=lib.findIndex(x=>x.id===t.id);if(i<0){lib.push({id:t.id,n:t.title,a:t.uname||"",type:"f",url:t.url,remote:1});i=lib.length-1}choose(i)}
 async function ensureProfile(){if(!user||!db)return;try{const r=doc(db,"profiles",user.uid),s=await getDoc(r);
- if(!s.exists())await setDoc(r,{name:S.name==="Лентяй"&&user.displayName?user.displayName.split(" ")[0]:S.name,verified:false,banned:false,t:Date.now()});
- else{const d=s.data();if(d.banned)toast("Аккаунт заблокирован");if(S.name&&d.name!==S.name)await setDoc(r,{name:S.name},{merge:true})}}catch(e){}}
-function applyPro(){const hp=document.querySelector("header .plan");if(hp)hp.style.display=isAdm()?"flex":"none";if(!isAdm()){if(S.proUntil>Date.now())setPro(true,1);else if(S.pro)setPro(false,1)}}
-function fx(){applyPro();const a=$("#adm");if(a)a.style.display=isMod()?"block":"none";if(!user){mine=[];pls=[]}ensureProfile().then(loadFeed);if(isMod())loadAdm()}
+ if(!s.exists())await setDoc(r,{name:S.name==="Лентяй"&&user.displayName?user.displayName.split(" ")[0]:S.name,verified:false,banned:false,proUntil:0,t:Date.now()});
+ else{const d=s.data();S.proUntil=d.proUntil||0;save();if(d.banned)toast("Аккаунт заблокирован");if(S.name&&d.name!==S.name)await setDoc(r,{name:S.name},{merge:true})}applyPro();shopDraw();prof()}catch(e){}}
+function applyPro(){const hp=document.querySelector("header .plan");if(hp)hp.style.display=isAdm()?"flex":"none";if(isAdm()){if(S.adm!==1){S.adm=1;S.pro=true;save();setPro(true,1)}return}if(S.proUntil>Date.now())setPro(true,1);else if(S.pro)setPro(false,1)}
+function fx(){if(!user)S.proUntil=0;applyPro();const a=$("#adm");if(a)a.style.display=isMod()?"block":"none";if(!user){mine=[];pls=[]}ensureProfile().then(loadFeed);if(isMod())loadAdm()}
 async function loadFeed(){if(!db)return;try{
  const vs=await getDocs(query(col("profiles"),where("verified","==",true)));ver=new Set(vs.docs.map(d=>d.id));
  const r=await getDocs(query(col("tracks"),where("status","==","approved"),limit(60)));feed=r.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.t||0)-(a.t||0));
@@ -425,7 +429,7 @@ function drawFeed(){const f=$("#fd");if(!f)return;
  const pl=user?`<h2>Мои плейлисты</h2><div class="row" style="margin:0 0 10px"><input class="fi" id="pln" placeholder="Новый плейлист" maxlength="30" style="flex:1;margin:0"><button class="chip on" id="plc">Создать</button></div>`+pls.map(p=>`<div class="card"><h3>${esc(p.name)}<button class="chip sm" data-pd="${p.id}">удалить</button></h3><div class="list">${(p.ids||[]).map(byId).filter(Boolean).map(t=>row(t,`<button class="ib" data-pr="${p.id}|${t.id}" aria-label="Убрать">✕</button>`)).join("")||'<small style="color:var(--mut)">Пусто. Добавляй треки кнопкой ＋ в ленте.</small>'}</div></div>`).join(""):"";
  f.innerHTML=up+`<h2>Новое в ленте</h2><div class="list">${fl}</div>`+mn+pl+`<p class="note" style="text-align:center;margin-top:24px">Правообладателям: жалобы на нарушение прав присылайте на ${esc(CONTACT)}. Нарушающие треки удаляются, аккаунты блокируются.</p>`}
 async function up(){const t=$("#fut").value.trim(),f=$("#fuf").files[0];
- if(!t||!f)return toast("Нужны название и файл");if(!$("#fuc").checked)return toast("Поставь галочку согласия");
+ if(!t||!f)return toast("Нужны название и файл");if(!isAdm()&&mine.filter(x=>x.status!=="rejected").length>=60)return toast("Лимит: 60 треков на аккаунт");if(!$("#fuc").checked)return toast("Поставь галочку согласия");
  if(!/^audio\//.test(f.type))return toast("Нужен аудиофайл");if(f.size>15e6)return toast("Максимум 15 МБ");
  if(SB_URL.startsWith("PASTE"))return toast("Хранилище ещё не подключено");
  $("#fub").disabled=true;toast("Загружаю…");
@@ -453,7 +457,7 @@ async function loadAdm(){try{const[a,b,c]=await Promise.all([getDocs(query(col("
  admP=a.docs.map(d=>({id:d.id,...d.data()}));const R=b.docs.map(d=>({id:d.id,...d.data()})),U=c.docs.map(d=>({id:d.id,...d.data()}));
  $("#adm").innerHTML=`<h3>${isAdm()?"Админ-панель":"Модерация"}</h3><b>На проверке (${admP.length})</b><div class="list" style="margin:8px 0 16px">${admP.map(t=>`<div class="card" style="margin:0 0 10px;background:var(--bg)"><b>${esc(t.title)}</b><br><small style="color:var(--mut)">${esc(t.uname||"")}</small><audio controls preload="none" src="${esc(t.url)}" style="width:100%;margin:10px 0"></audio><div class="row" style="margin:0"><button class="cta" data-ok="${t.id}" style="flex:1">Одобрить</button><button class="chip" data-no="${t.id}" style="flex:1">Отклонить</button></div></div>`).join("")||"<small style='color:var(--mut)'>Пусто</small>"}</div>
  <b>Жалобы (${R.length})</b><div class="list" style="margin:8px 0 16px">${R.map(r=>`<div class="tr"><div class="m"><b>${esc(r.title||r.trackId)}</b><small>${esc(r.reason||"")}</small></div><button class="chip sm" data-rm="${r.trackId}">снять трек</button><button class="chip sm" data-rc="${r.id}">закрыть</button></div>`).join("")||"<small style='color:var(--mut)'>Пусто</small>"}</div>
- <b>Пользователи</b><div class="list" style="margin-top:8px">${U.map(u=>`<div class="tr"><div class="m"><b>${esc(u.name||"—")}${u.verified?' <span class="vb">✓</span>':""}</b><small>${u.banned?"заблокирован":u.id.slice(0,8)}</small></div>${isAdm()?`<button class="chip sm ${u.verified?"on":""}" data-vf="${u.id}|${u.verified?1:0}">галочка</button>`:""}<button class="chip sm ${u.banned?"on":""}" data-bn="${u.id}|${u.banned?1:0}">бан</button></div>`).join("")}</div>`}catch(e){$("#adm").innerHTML="<h3>Админ-панель</h3><small>Ошибка: "+esc(e.code||"")+"</small>"}}
+ <b>Пользователи</b><div class="list" style="margin-top:8px">${U.map(u=>`<div class="tr"><div class="m"><b>${esc(u.name||"—")}${u.verified?' <span class="vb">✓</span>':""}</b><small>${u.banned?"заблокирован":(u.proUntil>Date.now()?(u.proUntil>4e12?"Pro навсегда":"Pro до "+new Date(u.proUntil).toLocaleDateString("ru-RU")):u.id.slice(0,8))}</small></div>${isAdm()?`<button class="chip sm ${u.verified?"on":""}" data-vf="${u.id}|${u.verified?1:0}">галочка</button>`:""}${isAdm()?`<button class="chip sm ${u.proUntil>Date.now()?"on":""}" data-pro="${u.id}">Pro</button>`:""}<button class="chip sm ${u.banned?"on":""}" data-bn="${u.id}|${u.banned?1:0}">бан</button></div>`).join("")}</div>`}catch(e){$("#adm").innerHTML="<h3>Админ-панель</h3><small>Ошибка: "+esc(e.code||"")+"</small>"}}
 $("#adm").onclick=async e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;try{
  if(d.ap){const t=admP.find(x=>x.id===d.ap);if(t)playT(t);return}
  if(d.ok)await updateDoc(doc(db,"tracks",d.ok),{status:"approved"});
@@ -462,6 +466,7 @@ $("#adm").onclick=async e=>{const b=e.target.closest("button");if(!b)return;cons
  if(d.rc)await deleteDoc(doc(db,"reports",d.rc));
  if(d.vf&&isAdm()){const[u,v]=d.vf.split("|");await updateDoc(doc(db,"profiles",u),{verified:v!=="1"})}
  if(d.bn){const[u,v]=d.bn.split("|");await updateDoc(doc(db,"profiles",u),{banned:v!=="1"})}
+ if(d.pro&&isAdm()){const x=prompt("На сколько дней выдать Pro?\n0 — забрать Pro, 9999 — навсегда","30");if(x===null)return;const n=Math.max(0,Math.floor(+x)||0),until=n===0?0:n>=9999?4102444800000:Date.now()+n*864e5;await updateDoc(doc(db,"profiles",d.pro),{proUntil:until});toast(n===0?"Pro забран":"Pro выдан")}
  loadAdm();loadFeed()}catch(er){toast(er.code||"Ошибка")}};
 render();
 </script><script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))</script></body></html>
